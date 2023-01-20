@@ -17,16 +17,10 @@
                     <td>{{ person.name }}</td>
                     <td>{{ person.age }}</td>
                     <td>{{ person.job }}</td>
-                    <td><a href="#" @click.prevent="changeEditPersonId(person.id)" class="btn btn-success">Edit</a>
+                    <td><a href="#" @click.prevent="changeEditPersonId(person.id, person.name, person.age, person.job)" class="btn btn-success">Edit</a>
                     <a href="#" @click.prevent="deletePerson(person.id)" class="btn btn-danger">Delete</a></td>
                 </tr>
-                <tr :class="isEdit(person.id) ? '' : 'd-none'">
-                    <td>{{ person.id }}</td>
-                    <td><input type="text" class="form-control" v-model="person.name"></td>
-                    <td><input type="number" class="form-control" v-model="person.age"></td>
-                    <td><input type="text" class="form-control" v-model="person.job"></td>
-                    <td><a href="#"  @click.prevent="updatedPerson(person)" class="btn btn-success">Update</a></td>
-                </tr>
+                <EditComponent :person="person" :ref="`edit_${person.id}`"></EditComponent>
             </template>
             </tbody>
         </table>
@@ -34,9 +28,10 @@
 </template>
 
 <script>
+import EditComponent from "./EditComponent.vue";
 export default {
     name: "IndexComponent",
-
+    components: {EditComponent},
     data(){
         return {
             people: null,
@@ -83,12 +78,21 @@ export default {
                 );
         },
 
-        changeEditPersonId(id){
+        changeEditPersonId(id, name, age, job){
+            let editName = `edit_${id}` //dynamic key
+
             this.editPersonId = id
+            this.$refs[editName][0].name = name //accessing a dynamic key
+            this.$refs[editName][0].age = age
+            this.$refs[editName][0].job = job
         },
 
         isEdit(id){
             return this.editPersonId === id
+        },
+
+        indexLog(){
+            console.log('this is log component');
         }
     }
 
