@@ -33,7 +33,6 @@ export default {
 
     methods: {
         addPerson() {
-            console.log(this.name)
             axios.post('/api/people',{ name: this.name,
                                                 age: this.age,
                                                 job: this.job})

@@ -5,7 +5,7 @@
         <td><input type="text" class="form-control" v-model="name"></td>
         <td><input type="number" class="form-control" v-model="age"></td>
         <td><input type="text" class="form-control" v-model="job"></td>
-        <td><a href="#" @click.prevent="updatedPerson(person)" class="btn btn-success">Update</a></td>
+        <td><a href="#" @click.prevent="updatedPerson(person.id, name, age, job)" class="btn btn-success">Update</a></td>
     </tr>
 
 </template>
@@ -31,17 +31,17 @@ export default {
 
     methods: {
 
-        updatedPerson(person) {
+        updatedPerson(id, name, age, job) {
             this.$parent.editPersonId = null
 
-            axios.patch(`/api/people/${person.id}`, {
-                id: person.id,
-                name: person.name,
-                age: person.age,
-                job: person.job
+            axios.patch(`/api/people/${id}`, {
+                id: id,
+                name: name,
+                age: age,
+                job: job
             })
                 .then(res => {
-                        this.parent.getPeople()
+                        this.$parent.getPeople()
                     }
                 );
         }
